@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Payments</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="container my-2">
+    <h3> Payments List</h3>
+    <div class="card">
+        <div class="card-body">
+            <div th:switch="${payments}" class="container my-5">
+                <p class="my-1">
+                    <a href="/payment/add" class="btn btn-primary">
+                        <i class="fas fa-circle"> Hold Payment </i></a>
+                </p>
+                <p class="my-1">
+                    <a href="/clarification/all" class="btn btn-primary">
+                        <i class="fas fa-circle"> Clarification List </i></a>
+                </p>
+                <p class="my-1">
+                    <a href="/" class="btn btn-primary">
+                        <i class="fas fa-circle"> Back To Main Page </i></a>
+                </p>
+                <p>Show payment results</p>
+                <div class="btn-group btn-group-justified">
+                    <a href="/payment/all" class="btn btn-primary">All</a>
+                    <a href="/payment/pending" class="btn btn-primary">Pending</a>
+                    <a href="/payment/raised" class="btn btn-primary">Raised</a>
+                    <a href="/payment/level3" class="btn btn-primary">Level3</a>
+                    <a href="/payment/closed" class="btn btn-primary">Closed</a>
+                </div>
+                <div class="col-md-10">
+                    <h2 th:case="null">No record found !!</h2>
+                    <div th:case="*">
+                        <br/>
+                        <p>
+                            <button onclick="sortTable()" class="btn btn-primary">Sort by hold time</button>
+                        </p>
+                        <input type="text" id="mySecondInput" onkeyup="alertIDSearch()" placeholder="Search for alertId.."
+                               title="Type in alertId">
+                        <input type="text" id="myInput" onkeyup="accountSearch()" placeholder="Search for account.."
+                               title="Type in account">
+                        <input type="text" id="myAmountInput" onkeyup="amountSearch()" placeholder="Search for amount.."
+                               title="Type in account">
+                        <table id="myTable" class="table table-striped table-responsive-md">
+                            <thead>
+                            <tr>
+                                <th>Alert ID</th>
+                                <th>Account</th>
+                                <th>Application</th>
+                                <th>Amount</th>
+                                <th>Hold time</th>
+                                <th>Status</th>
+                                <th>Assigned</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="payment : ${payments}">
+                                <td th:text="${payment.alertId}"></td>
+                                <td th:text="${payment.account}"></td>
+                                <td th:text="${payment.application}"></td>
+                                <td th:text="${payment.amount}"></td>
+                                <td th:text="${payment.created}"></td>
+                                <td th:text="${payment.status}"></td>
+                                <td th:text="${payment.assignedPerson}"></td>
+                                <td>
+                                    <a th:href="@{/payment/edit/{id}(id=${payment.id})}"
+                                       class="btn btn-primary">
+                                        <i class="fas fa-edit">Edit</i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{/payment/delete/{id}(id=${payment.id})}"
+                                       class="btn btn-primary">
+                                        <i class="fas fa-trash-alt">Delete</i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <script>
+                            function sortTable() {
+                                var table, rows, switching, i, x, y, shouldSwitch;
+                                table = document.getElementById("myTable");
+                                switching = true;
+                                while (switching) {
+                                    switching = false;
+                                    rows = table.rows;
+                                    for (i = 1; i < (rows.length - 1); i++) {
+                                        shouldSwitch = false;
+                                        x = rows[i].getElementsByTagName("TD")[4];
+                                        y = rows[i + 1].getElementsByTagName("TD")[4];
+                                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                            shouldSwitch = true;
+                                            break;
+                                        }
+                                    }
+                                    if (shouldSwitch) {
+                                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                                        switching = true;
+                                    }
+                                }
+                            }
+                        </script>
+                        <script>
+                            function accountSearch() {
+                                var input, filter, table, tr, td, i, txtValue;
+                                input = document.getElementById("myInput");
+                                filter = input.value.toUpperCase();
+                                table = document.getElementById("myTable");
+                                tr = table.getElementsByTagName("tr");
+                                for (i = 0; i < tr.length; i++) {
+                                    td = tr[i].getElementsByTagName("td")[1];
+                                    if (td) {
+                                        txtValue = td.textContent || td.innerText;
+                                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                            tr[i].style.display = "";
+                                        } else {
+                                            tr[i].style.display = "none";
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+                        <script>
+                            function alertIDSearch() {
+                                var input, filter, table, tr, td, i, txtValue;
+                                input = document.getElementById("mySecondInput");
+                                filter = input.value.toUpperCase();
+                                table = document.getElementById("myTable");
+                                tr = table.getElementsByTagName("tr");
+                                for (i = 0; i < tr.length; i++) {
+                                    td = tr[i].getElementsByTagName("td")[0];
+                                    if (td) {
+                                        txtValue = td.textContent || td.innerText;
+                                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                            tr[i].style.display = "";
+                                        } else {
+                                            tr[i].style.display = "none";
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+                        <script>
+                            function amountSearch() {
+                                var input, filter, table, tr, td, i, txtValue;
+                                input = document.getElementById("myAmountInput");
+                                filter = input.value.toUpperCase();
+                                table = document.getElementById("myTable");
+                                tr = table.getElementsByTagName("tr");
+                                for (i = 0; i < tr.length; i++) {
+                                    td = tr[i].getElementsByTagName("td")[3];
+                                    if (td) {
+                                        txtValue = td.textContent || td.innerText;
+                                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                            tr[i].style.display = "";
+                                        } else {
+                                            tr[i].style.display = "none";
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>STARS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h3>Welcome to STARS application</h3>
+<p>Check what you would like to do</p>
+<div class="btn-group"  >
+    <p class="my-1">
+        <a href="/payment/pending" class="btn btn-primary">
+            <i class="fas fa-circle"> Show Pending Payments</i></a>
+    </p>
+    <p class="my-1">
+        <a href="/payment/add" class="btn btn-primary">
+            <i class="fas fa-circle"> Hold Payment </i></a>
+    </p>
+    <p class="my-1">
+        <a href="/clarification/add" class="btn btn-primary">
+            <i class="fas fa-circle"> Add Clarification </i></a>
+    </p>
+    <p class="my-1">
+        <a href="/clarification/all" class="btn btn-primary">
+            <i class="fas fa-circle"> Clarification List </i></a>
+    </p>
+    <p class="my-1">
+        <a href="/logout" class="btn btn-primary">
+            <i class="fas fa-circle"> Logout </i></a>
+    </p>
+</div>
+</body>
+</html>
